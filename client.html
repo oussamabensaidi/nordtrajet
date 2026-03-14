@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nord Trajet — Espace Client</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:#0D2151; --navy-dark:#071436; --navy-mid:#1A3470;
+      --blue:#1E5FBE; --blue-light:#2E7EE8;
+      --white:#FFFFFF; --off-white:#F4F7FC; --muted:#6B84A8;
+      --border:#D8E4F0; --text:#1A2840; --text-soft:#4A6080;
+      --gold:#E8A21A; --success:#16A34A; --danger:#DC2626;
+      --radius:10px; --shadow:0 2px 12px rgba(13,33,81,.10);
+      --shadow-lg:0 8px 32px rgba(13,33,81,.16);
+    }
+    body { font-family:'Barlow',sans-serif; color:var(--text); background:var(--off-white); }
+
+    /* NAV */
+    .nav {
+      background:var(--white); border-bottom:3px solid var(--navy);
+      padding:0 5%; display:flex; align-items:center; justify-content:space-between;
+      height:68px; box-shadow:0 2px 16px rgba(13,33,81,.08);
+    }
+    .logo-wrap { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .logo-box { background:var(--navy); border-radius:8px; padding:5px 8px; display:flex; align-items:center; }
+    .logo-name { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:22px; color:var(--navy); letter-spacing:.04em; text-transform:uppercase; display:block; }
+    .logo-sub { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; color:var(--blue); letter-spacing:.16em; text-transform:uppercase; }
+    .nav-links { display:flex; gap:8px; align-items:center; }
+    .btn { display:inline-flex; align-items:center; gap:7px; font-family:'Barlow',sans-serif; font-size:13px; font-weight:600; padding:8px 18px; border-radius:var(--radius); border:none; cursor:pointer; text-decoration:none; transition:all .18s; }
+    .btn-navy { background:var(--navy); color:white; }
+    .btn-navy:hover { background:var(--navy-mid); }
+    .btn-outline { background:transparent; color:var(--navy); border:1.5px solid var(--navy); }
+    .btn-outline:hover { background:var(--navy); color:white; }
+    .btn-blue { background:var(--blue); color:white; }
+    .btn-blue:hover { background:var(--blue-light); }
+    .btn-ghost { background:var(--off-white); color:var(--text); border:1.5px solid var(--border); }
+    .btn-ghost:hover { background:var(--border); }
+    .btn-gold { background:var(--gold); color:var(--navy); font-weight:700; }
+    .btn-success { background:var(--success); color:white; }
+    .btn-lg { font-size:15px; padding:12px 26px; }
+    .btn-sm { font-size:12px; padding:6px 12px; }
+
+    /* TABS */
+    .page-header {
+      background:linear-gradient(135deg, var(--navy-dark), var(--navy-mid));
+      padding:40px 5% 0;
+    }
+    .page-header h1 {
+      font-family:'Barlow Condensed',sans-serif; font-size:32px;
+      font-weight:800; color:white; text-transform:uppercase;
+      letter-spacing:.04em; margin-bottom:4px;
+    }
+    .page-header p { font-size:14px; color:rgba(255,255,255,0.55); margin-bottom:28px; }
+    .tabs { display:flex; gap:0; }
+    .tab {
+      font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700;
+      color:rgba(255,255,255,0.5); letter-spacing:.06em; text-transform:uppercase;
+      padding:12px 28px; cursor:pointer; border-radius:10px 10px 0 0;
+      border:none; background:transparent; transition:all .18s;
+    }
+    .tab.active { background:var(--off-white); color:var(--navy); }
+    .tab:hover:not(.active) { color:white; background:rgba(255,255,255,0.08); }
+
+    /* MAIN CONTENT */
+    .main { padding:32px 5%; max-width:1100px; margin:0 auto; }
+
+    /* SECTION DIVIDER */
+    .sdiv {
+      display:flex; align-items:center; gap:12px;
+      margin:28px 0 20px;
+    }
+    .sdiv-label {
+      font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700;
+      color:white; letter-spacing:.1em; text-transform:uppercase;
+      background:var(--navy); padding:4px 12px; border-radius:5px;
+      white-space:nowrap;
+    }
+    .sdiv-line { flex:1; height:1.5px; background:var(--border); }
+
+    /* FORM */
+    .form-card { background:var(--white); border-radius:14px; border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
+    .form-card-header { background:var(--navy); padding:20px 28px; display:flex; align-items:center; justify-content:space-between; }
+    .form-card-title { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:800; color:white; letter-spacing:.06em; text-transform:uppercase; }
+    .form-card-body { padding:28px; }
+    label { display:block; font-size:12px; font-weight:700; color:var(--text); margin-bottom:6px; letter-spacing:.02em; text-transform:uppercase; }
+    label .req { color:var(--danger); margin-left:2px; }
+    input[type="text"], input[type="tel"], input[type="number"], input[type="email"], select, textarea {
+      width:100%; padding:10px 14px; font-family:'Barlow',sans-serif; font-size:14px;
+      color:var(--text); background:var(--white); border:1.5px solid var(--border);
+      border-radius:var(--radius); outline:none; transition:border-color .18s, box-shadow .18s;
+    }
+    input:focus, select:focus, textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(30,95,190,0.12); }
+    input::placeholder { color:#C5D0E0; }
+    select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B84A8' stroke-width='2.5'%3E%3Cpolyline points='6,9 12,15 18,9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:36px; cursor:pointer; }
+    textarea { resize:vertical; min-height:80px; }
+    .form-group { margin-bottom:18px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+
+    /* Checkbox options */
+    .check-grid { display:flex; flex-wrap:wrap; gap:8px; }
+    .check-item {
+      display:flex; align-items:center; gap:7px;
+      padding:7px 14px; border:1.5px solid var(--border);
+      border-radius:8px; cursor:pointer; font-size:13px; font-weight:500;
+      transition:all .15s; user-select:none; color:var(--text);
+    }
+    .check-item:hover { border-color:var(--blue); background:rgba(30,95,190,0.04); }
+    .check-item input { width:auto; accent-color:var(--blue); }
+    .check-item.selected { border-color:var(--navy); background:rgba(13,33,81,0.05); color:var(--navy); }
+
+    /* Pricing summary */
+    .price-summary {
+      background:var(--off-white); border:1.5px solid var(--border);
+      border-radius:12px; padding:20px 22px;
+    }
+    .price-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; font-size:14px; border-bottom:1px solid var(--border); }
+    .price-row:last-child { border-bottom:none; font-weight:700; font-size:16px; color:var(--navy); }
+    .price-row span:first-child { color:var(--text-soft); }
+
+    /* Step indicator */
+    .steps-indicator { display:flex; align-items:center; gap:0; margin-bottom:32px; }
+    .si-step {
+      display:flex; align-items:center; gap:10px;
+      font-size:13px; font-weight:600; color:var(--muted);
+    }
+    .si-num {
+      width:28px; height:28px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--border); color:var(--muted);
+      font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800;
+      flex-shrink:0;
+    }
+    .si-step.active .si-num { background:var(--navy); color:white; }
+    .si-step.active { color:var(--navy); }
+    .si-step.done .si-num { background:var(--success); color:white; }
+    .si-step.done { color:var(--success); }
+    .si-line { flex:1; height:2px; background:var(--border); margin:0 8px; }
+    .si-line.done { background:var(--success); }
+
+    /* TRACKING */
+    .track-input-wrap {
+      background:var(--white); border-radius:14px;
+      border:1px solid var(--border); padding:32px;
+      box-shadow:var(--shadow); margin-bottom:28px;
+    }
+    .track-input-row { display:flex; gap:12px; margin-top:16px; }
+    .track-input-row input { flex:1; font-size:15px; letter-spacing:.04em; }
+    .tracking-result { background:var(--white); border-radius:14px; border:1px solid var(--border); box-shadow:var(--shadow); overflow:hidden; }
+    .tr-header { background:var(--navy); padding:20px 28px; display:flex; align-items:center; justify-content:space-between; }
+    .tr-code { font-family:monospace; font-size:16px; font-weight:700; color:white; letter-spacing:.08em; }
+    .status-badge {
+      display:inline-flex; align-items:center; gap:6px;
+      font-size:12px; font-weight:700; padding:5px 14px;
+      border-radius:100px; text-transform:uppercase; letter-spacing:.06em;
+    }
+    .sb-transit { background:rgba(232,162,26,0.2); color:var(--gold); }
+    .sb-delivered { background:rgba(22,163,74,0.2); color:var(--success); }
+    .sb-pending { background:rgba(30,95,190,0.2); color:var(--blue); }
+    .sb-held { background:rgba(220,38,38,0.15); color:var(--danger); }
+    .sb-transit::before,.sb-pending::before { content:''; width:5px; height:5px; background:currentColor; border-radius:50%; animation:blink 1.5s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .tr-body { padding:28px; display:grid; grid-template-columns:2fr 1fr; gap:28px; }
+    .tr-info { }
+    .tr-info-row { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--off-white); }
+    .tr-info-row:last-child { border-bottom:none; }
+    .tr-info-label { font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; width:120px; flex-shrink:0; padding-top:1px; }
+    .tr-info-val { font-size:14px; font-weight:500; color:var(--text); }
+    /* Timeline */
+    .timeline { display:flex; flex-direction:column; gap:0; }
+    .tl-item { display:flex; gap:14px; padding:12px 0; position:relative; }
+    .tl-left { display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:20px; }
+    .tl-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:3px; z-index:1; }
+    .tl-dot.done { background:var(--navy); }
+    .tl-dot.active { background:var(--blue); box-shadow:0 0 0 4px rgba(30,95,190,0.15); animation:blink 2s infinite; }
+    .tl-dot.pending { background:var(--border); border:2px solid var(--border); }
+    .tl-vline { flex:1; width:2px; background:var(--border); margin-top:2px; }
+    .tl-vline.done { background:var(--navy); }
+    .tl-content { padding-bottom:8px; }
+    .tl-label { font-size:13px; font-weight:600; color:var(--text); }
+    .tl-label.pending-l { color:var(--muted); font-weight:400; }
+    .tl-time { font-size:11px; color:var(--muted); margin-top:2px; }
+
+    /* SUCCESS STATE */
+    .success-card {
+      background:var(--white); border-radius:14px;
+      border:1.5px solid #BBF7D0; box-shadow:var(--shadow);
+      padding:40px; text-align:center;
+    }
+    .success-icon { width:72px; height:72px; background:#DCFCE7; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+    .success-icon svg { width:36px; height:36px; stroke:var(--success); }
+    .success-card h2 { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:800; color:var(--navy); text-transform:uppercase; margin-bottom:10px; }
+    .success-card p { font-size:15px; color:var(--text-soft); margin-bottom:6px; }
+    .tracking-code-display {
+      font-family:monospace; font-size:22px; font-weight:700;
+      color:var(--blue); background:var(--off-white);
+      border:1.5px solid var(--border); border-radius:10px;
+      padding:14px 28px; margin:20px auto; display:inline-block;
+      letter-spacing:.1em;
+    }
+
+    /* TAB PANEL */
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    @media(max-width:768px) {
+      .form-row,.form-row-3 { grid-template-columns:1fr; }
+      .tr-body { grid-template-columns:1fr; }
+      .track-input-row { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="logo-wrap">
+    <div class="logo-box">
+      <svg width="38" height="26" viewBox="0 0 56 40" fill="none">
+        <rect x="2" y="12" width="32" height="22" rx="3" fill="white" opacity="0.15" stroke="white" stroke-width="1.5"/>
+        <rect x="34" y="18" width="20" height="16" rx="2" fill="white" opacity="0.1" stroke="white" stroke-width="1.5"/>
+        <path d="M34 22h12l4 4v8H34V22z" fill="white" opacity="0.2"/>
+        <circle cx="10" cy="34" r="4" fill="white"/><circle cx="10" cy="34" r="2" fill="#0D2151"/>
+        <circle cx="42" cy="34" r="4" fill="white"/><circle cx="42" cy="34" r="2" fill="#0D2151"/>
+      </svg>
+    </div>
+    <div>
+      <span class="logo-name">Nord Trajet</span>
+      <span class="logo-sub">De Transport</span>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="btn btn-ghost btn-sm">← Accueil</a>
+    <a href="admin.html" class="btn btn-outline btn-sm">Admin</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER & TABS -->
+<div class="page-header">
+  <h1>Espace Client</h1>
+  <p>Créez une déclaration d'expédition ou suivez vos colis en temps réel</p>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('declaration')">📦 Nouvelle Déclaration</button>
+    <button class="tab" onclick="switchTab('tracking')">🔍 Suivi de Colis</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- DECLARATION TAB -->
+  <div id="tab-declaration" class="tab-panel active">
+
+    <!-- Step indicator -->
+    <div class="steps-indicator">
+      <div class="si-step active" id="si-1">
+        <div class="si-num">1</div>
+        <span>Expéditeur</span>
+      </div>
+      <div class="si-line" id="sl-1"></div>
+      <div class="si-step" id="si-2">
+        <div class="si-num">2</div>
+        <span>Destinataire</span>
+      </div>
+      <div class="si-line" id="sl-2"></div>
+      <div class="si-step" id="si-3">
+        <div class="si-num">3</div>
+        <span>Colis</span>
+      </div>
+      <div class="si-line" id="sl-3"></div>
+      <div class="si-step" id="si-4">
+        <div class="si-num">4</div>
+        <span>Paiement</span>
+      </div>
+      <div class="si-line" id="sl-4"></div>
+      <div class="si-step" id="si-5">
+        <div class="si-num">5</div>
+        <span>Confirmation</span>
+      </div>
+    </div>
+
+    <!-- FORM STEPS -->
+    <!-- STEP 1: SENDER -->
+    <div id="step-1" class="form-step">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-title">1 — Informations Expéditeur (المرسل)</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5);">Étape 1 / 4</span>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expéditeur <span class="req">*</span></label>
+              <input type="text" placeholder="Nom complet"/>
+            </div>
+            <div class="form-group">
+              <label>Tél <span class="req">*</span></label>
+              <input type="tel" placeholder="06 XX XX XX XX"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Adresse <span class="req">*</span></label>
+            <input type="text" placeholder="Adresse complète"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ville <span class="req">*</span></label>
+              <select>
+                <option value="">Sélectionner...</option>
+                <option value="tanger" selected>Tanger</option>
+                <option value="casa">Casablanca</option>
+                <option value="rabat">Rabat</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>CIN</label>
+              <input type="text" placeholder="CIN (optionnel)"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fait à</label>
+              <input type="text" placeholder="Ville de déclaration"/>
+            </div>
+            <div class="form-group">
+              <label>Le</label>
+              <input type="text" placeholder="Date" value="14/03/2026"/>
+            </div>
+          </div>
+          <div style="background:#FFF8E1;border:1px solid #FDE68A;border-radius:8px;padding:12px 16px;font-size:12px;color:#7A5800;margin-top:8px;">
+            ⚠️ Je soussigné(e), certifie que les informations sont exactes et que la marchandise ne contient aucun produit interdit par la réglementation en vigueur.
+          </div>
+        </div>
+        <div style="padding:0 28px 24px;display:flex;justify-content:flex-end;">
+          <button class="btn btn-navy btn-lg" onclick="goStep(2)">Suivant → Destinataire</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: RECIPIENT -->
+    <div id="step-2" class="form-step" style="display:none">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-title">2 — Informations Destinataire (المرسل إليه)</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5);">Étape 2 / 4</span>
+        </div>
+        <div class="form-card-body">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Destinataire <span class="req">*</span></label>
+              <input type="text" placeholder="Nom complet"/>
+            </div>
+            <div class="form-group">
+              <label>Tél <span class="req">*</span></label>
+              <input type="tel" placeholder="06 XX XX XX XX"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Adresse <span class="req">*</span></label>
+            <input type="text" placeholder="Adresse complète de livraison"/>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Ville de livraison <span class="req">*</span></label>
+              <select>
+                <option value="">Sélectionner...</option>
+                <option value="casa" selected>Casablanca</option>
+                <option value="tanger">Tanger</option>
+                <option value="rabat">Rabat</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>N° CIN / Raison sociale</label>
+              <input type="text" placeholder="Optionnel"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Reçu à</label>
+              <input type="text" placeholder="Lieu de réception"/>
+            </div>
+            <div class="form-group">
+              <label>Le</label>
+              <input type="text" placeholder="Date de réception attendue"/>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 28px 24px;display:flex;justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goStep(1)">← Retour</button>
+          <button class="btn btn-navy btn-lg" onclick="goStep(3)">Suivant → Colis</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: COLIS -->
+    <div id="step-3" class="form-step" style="display:none">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-title">3 — Détails du Colis</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5);">Étape 3 / 4</span>
+        </div>
+        <div class="form-card-body">
+          <!-- Type de colis checkboxes -->
+          <div class="form-group">
+            <label>Type de marchandises <span class="req">*</span></label>
+            <div class="check-grid">
+              <label class="check-item"><input type="checkbox"/> Fragile</label>
+              <label class="check-item"><input type="checkbox"/> Transport de marchandises</label>
+              <label class="check-item"><input type="checkbox"/> Messagerie</label>
+              <label class="check-item"><input type="checkbox"/> Fret</label>
+              <label class="check-item"><input type="checkbox"/> Distribution</label>
+              <label class="check-item"><input type="checkbox"/> Courses urgentes</label>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:20px;">
+            <label>Nature des marchandises <span class="req">*</span></label>
+            <input type="text" placeholder="Description du contenu"/>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Type de transport <span class="req">*</span></label>
+              <div class="check-grid">
+                <label class="check-item"><input type="radio" name="transport" checked/> National</label>
+                <label class="check-item"><input type="radio" name="transport"/> International</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Mode de livraison <span class="req">*</span></label>
+              <div class="check-grid">
+                <label class="check-item"><input type="radio" name="livraison" checked/> À domicile</label>
+                <label class="check-item"><input type="radio" name="livraison"/> En ville</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>Nbre de colis <span class="req">*</span></label>
+              <input type="number" placeholder="1" min="1"/>
+            </div>
+            <div class="form-group">
+              <label>Poids (kg) <span class="req">*</span></label>
+              <input type="number" placeholder="0.0" step="0.1" min="0"/>
+            </div>
+            <div class="form-group">
+              <label>Volume (m³)</label>
+              <input type="number" placeholder="0.0" step="0.01"/>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Valeur déclarée (Dhs)</label>
+              <input type="number" placeholder="100" min="0"/>
+            </div>
+            <div class="form-group">
+              <label>Type d'expédition <span class="req">*</span></label>
+              <div class="check-grid">
+                <label class="check-item"><input type="radio" name="expedition" checked/> Simple</label>
+                <label class="check-item"><input type="radio" name="expedition"/> Express</label>
+                <label class="check-item"><input type="radio" name="expedition"/> Affrètement</label>
+                <label class="check-item"><input type="radio" name="expedition"/> Bagages</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:0 28px 24px;display:flex;justify-content:space-between;">
+          <button class="btn btn-ghost" onclick="goStep(2)">← Retour</button>
+          <button class="btn btn-navy btn-lg" onclick="goStep(4)">Suivant → Paiement</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: PAYMENT -->
+    <div id="step-4" class="form-step" style="display:none">
+      <div class="form-card">
+        <div class="form-card-header">
+          <span class="form-card-title">4 — Paiement & Expédition</span>
+          <span style="font-size:12px;color:rgba(255,255,255,0.5);">Étape 4 / 4</span>
+        </div>
+        <div class="form-card-body">
+          <div class="form-group">
+            <label>Port (frais de transport) <span class="req">*</span></label>
+            <div class="check-grid">
+              <label class="check-item"><input type="radio" name="port"/> Payé (par l'expéditeur)</label>
+              <label class="check-item"><input type="radio" name="port" checked/> Dû (par le destinataire)</label>
+            </div>
+          </div>
+
+          <div style="border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-top:8px;">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;">Retour de fonds (Contre-remboursement)</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Montant total (Dhs)</label>
+                <input type="number" placeholder="0.00" step="0.01"/>
+              </div>
+              <div class="form-group">
+                <label>Mode de remboursement</label>
+                <select>
+                  <option value="">Sélectionner...</option>
+                  <option>C/ Espèces</option>
+                  <option>C/ Chèque</option>
+                  <option>C/ Traite</option>
+                  <option>C/ BL</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:20px;border:1.5px solid var(--border);border-radius:12px;padding:20px;">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;">Expédition — Tarif</div>
+            <div class="price-row" style="display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid var(--border);">
+              <span style="color:var(--text-soft);">Hors taxe</span><span>.............. Dhs</span>
+            </div>
+            <div class="price-row" style="display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px solid var(--border);">
+              <span style="color:var(--text-soft);">TVA</span><span>.............. Dhs</span>
+            </div>
+            <div class="price-row" style="display:flex;justify-content:space-between;padding:10px 0 0;font-size:16px;font-weight:700;color:var(--navy);">
+              <span>T.T.C</span><span>.............. Dhs</span>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:20px;">
+            <label>Notes / Instructions spéciales</label>
+            <textarea placeholder="Instructions de manutention, informations complémentaires..."></textarea>
+          </div>
+        </div>
+        <div style="padding:0 28px 24px;display:flex;justify-content:space-between;align-items:center;">
+          <button class="btn btn-ghost" onclick="goStep(3)">← Retour</button>
+          <button class="btn btn-gold btn-lg" onclick="submitDeclaration()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            Valider la Déclaration
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: SUCCESS -->
+    <div id="step-5" class="form-step" style="display:none">
+      <div class="success-card">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
+          </svg>
+        </div>
+        <h2>Déclaration enregistrée !</h2>
+        <p style="color:var(--text-soft);">Votre expédition a été créée avec succès. Voici votre code de suivi :</p>
+        <div class="tracking-code-display">NT-2026-084722</div>
+        <p style="font-size:13px;color:var(--muted);margin-bottom:28px;">Conservez ce code pour suivre votre colis à tout moment.</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn btn-navy btn-lg" onclick="switchTab('tracking')">🔍 Suivre ce colis</button>
+          <button class="btn btn-ghost btn-lg" onclick="printDeclaration()">🖨️ Imprimer la déclaration</button>
+          <button class="btn btn-ghost btn-lg" onclick="resetForm()">+ Nouvelle déclaration</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRACKING TAB -->
+  <div id="tab-tracking" class="tab-panel">
+    <div class="track-input-wrap">
+      <h2 style="font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;">Suivre un Colis</h2>
+      <p style="font-size:14px;color:var(--text-soft);margin-top:6px;">Entrez votre code de suivi ou scannez le QR code sur l'étiquette.</p>
+      <div class="track-input-row">
+        <input type="text" id="track-input" placeholder="Ex: NT-2026-084721" style="font-size:15px;letter-spacing:.04em;" value="NT-2026-084721"/>
+        <button class="btn btn-navy btn-lg" onclick="doTracking()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Rechercher
+        </button>
+      </div>
+    </div>
+
+    <div id="tracking-result" class="tracking-result" style="display:none">
+      <div class="tr-header">
+        <div>
+          <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;">Code de suivi</div>
+          <div class="tr-code">NT-2026-084721</div>
+        </div>
+        <span class="status-badge sb-transit">En Transit</span>
+      </div>
+      <div class="tr-body">
+        <div class="tr-info">
+          <div class="tr-info-row">
+            <span class="tr-info-label">Expéditeur</span>
+            <span class="tr-info-val">Hassan Benali — Tanger</span>
+          </div>
+          <div class="tr-info-row">
+            <span class="tr-info-label">Destinataire</span>
+            <span class="tr-info-val">Sara Idrissi — Casablanca</span>
+          </div>
+          <div class="tr-info-row">
+            <span class="tr-info-label">Colis</span>
+            <span class="tr-info-val">3 colis · 12 kg · Fragile</span>
+          </div>
+          <div class="tr-info-row">
+            <span class="tr-info-label">Trajet</span>
+            <span class="tr-info-val">Tanger → Casablanca</span>
+          </div>
+          <div class="tr-info-row">
+            <span class="tr-info-label">Paiement</span>
+            <span class="tr-info-val">Contre-remboursement — 450 Dhs</span>
+          </div>
+          <div class="tr-info-row">
+            <span class="tr-info-label">Déclaration</span>
+            <span class="tr-info-val">14/03/2026</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;">Historique du trajet</div>
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot done"></div><div class="tl-vline done"></div></div>
+              <div class="tl-content"><div class="tl-label">Déclaration reçue</div><div class="tl-time">14/03/2026 — 09:14</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot done"></div><div class="tl-vline done"></div></div>
+              <div class="tl-content"><div class="tl-label">Colis enlevé — Tanger</div><div class="tl-time">14/03/2026 — 11:32</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot active"></div><div class="tl-vline"></div></div>
+              <div class="tl-content"><div class="tl-label">En transit vers Casablanca</div><div class="tl-time">En cours…</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot pending"></div><div class="tl-vline"></div></div>
+              <div class="tl-content"><div class="tl-label pending-l">Arrivée à l'agence CAS</div><div class="tl-time">—</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot pending"></div><div class="tl-vline"></div></div>
+              <div class="tl-content"><div class="tl-label pending-l">En cours de livraison</div><div class="tl-time">—</div></div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-left"><div class="tl-dot pending"></div></div>
+              <div class="tl-content"><div class="tl-label pending-l">Livré — Signature confirmée</div><div class="tl-time">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+  let currentStep = 1;
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('tab-' + tab).classList.add('active');
+    event.target.classList.add('active');
+    if (tab === 'tracking') setTimeout(doTracking, 100);
+  }
+
+  function goStep(n) {
+    document.querySelectorAll('.form-step').forEach(s => s.style.display = 'none');
+    document.getElementById('step-' + n).style.display = 'block';
+    currentStep = n;
+    // Update step indicators
+    for (let i = 1; i <= 5; i++) {
+      const si = document.getElementById('si-' + i);
+      if (!si) continue;
+      si.classList.remove('active', 'done');
+      if (i < n) si.classList.add('done');
+      else if (i === n) si.classList.add('active');
+    }
+    for (let i = 1; i <= 4; i++) {
+      const sl = document.getElementById('sl-' + i);
+      if (!sl) continue;
+      sl.classList.remove('done');
+      if (i < n) sl.classList.add('done');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function submitDeclaration() {
+    goStep(5);
+  }
+
+  function resetForm() {
+    goStep(1);
+  }
+
+  function printDeclaration() {
+    alert('Fonctionnalité d\'impression à connecter au backend.');
+  }
+
+  function doTracking() {
+    const val = document.getElementById('track-input').value.trim();
+    if (val) {
+      document.getElementById('tracking-result').style.display = 'block';
+    }
+  }
+</script>
+
+</body>
+</html>
