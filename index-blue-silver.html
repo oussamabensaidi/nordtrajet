@@ -47,7 +47,7 @@ nav ul a:hover{color:#fff}nav ul a:hover::after{transform:scaleX(1)}
 .nav-cta:hover{background:#E8EDF5;transform:translateY(-1px)}
 
 /* HERO */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:140px 5% 100px;overflow:hidden}
+.hero{position:relative;min-height:92vh;display:flex;align-items:center;padding:140px 5% 100px;overflow:hidden}
 .hero-bg{position:absolute;inset:0;z-index:0;background:linear-gradient(135deg,#0B2A5C 0%,#134089 40%,#1565C0 80%,#1E88E5 100%)}
 .hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%);pointer-events:none}
 .hero-content{position:relative;z-index:2;max-width:640px}
@@ -79,7 +79,7 @@ nav ul a:hover{color:#fff}nav ul a:hover::after{transform:scaleX(1)}
 
 /* MARQUEE */
 .marquee-strip{background:linear-gradient(90deg,#0B2A5C,#1565C0);padding:11px 0;overflow:hidden;position:relative;z-index:1}
-.marquee-track{display:flex;gap:0;animation:marquee 30s linear infinite;white-space:nowrap}
+.marquee-track{display:flex;gap:0;animation:marquee 22s linear infinite;white-space:nowrap}
 .marquee-item{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:.12em;color:#fff;padding:0 32px;display:inline-flex;align-items:center;gap:12px;flex-shrink:0}
 .marquee-item::after{content:'●';font-size:7px;opacity:.5}
 @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -215,6 +215,38 @@ nav ul{display:none}
 .cities-grid{gap:10px}
 .city-chip{padding:10px 16px;font-size:15px}
 }
+
+/* Scroll hint */
+.scroll-hint{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:rise 1s 1.4s forwards}
+.scroll-hint span{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollDrop 1.8s 2s infinite}
+@keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top;opacity:1}50%{transform:scaleY(1);transform-origin:top;opacity:1}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom;opacity:0}}
+
+/* Mobile lang toggle fix */
+.mobile-lang{display:none;position:fixed;bottom:20px;right:20px;z-index:300;background:rgba(0,0,0,0.7);backdrop-filter:blur(12px);border-radius:10px;border:1px solid rgba(255,255,255,0.1);overflow:hidden}
+.mobile-lang .lang-btn{padding:10px 16px;font-size:13px}
+
+@media(max-width:700px){
+.hero{min-height:auto;padding:100px 5% 70px}
+.hero-stats{gap:20px;flex-wrap:wrap;margin-top:40px;padding-top:28px}
+.stat-num{font-size:32px}
+.scroll-hint{display:none}
+.mobile-lang{display:flex}
+nav .lang-switch{display:none}
+nav .nav-cta{display:none}
+.services-top{margin-bottom:40px}
+.services{padding:70px 5%}
+.coverage{padding:70px 5%}
+.form-section{padding:70px 5%}
+.how{padding:70px 5%;gap:48px}
+.b2b-banner{padding:70px 5%;gap:40px}
+.cta{padding:80px 5%}
+.svc{padding:28px 22px}
+.marquee-item{padding:0 20px;font-size:13px}
+.hero h1{font-size:clamp(42px,10vw,64px)}
+.section-headline{font-size:clamp(32px,7vw,48px)}
+}
+
 </style>
 </head>
 <body>
@@ -291,22 +323,85 @@ nav ul{display:none}
     </div>
   </div>
   <div class="hero-visual">
-    <div style="background:var(--navy-2);border:1px solid var(--border);border-radius:24px;padding:40px;box-shadow:0 32px 80px rgba(0,0,0,0.5);text-align:center;">
-      <div class="logo-emblem-bg" style="width:80px;height:80px;margin:0 auto 20px;">
-        <svg width="48" height="36" viewBox="0 0 56 38" fill="none">
-          <rect x="1" y="8" width="34" height="22" rx="3" stroke="white" stroke-width="1.5" fill="white" fill-opacity="0.12"/>
-          <rect x="35" y="14" width="20" height="16" rx="2" stroke="white" stroke-width="1.4" fill="white" fill-opacity="0.08"/>
-          <path d="M35 18 L44 14 L55 18 V28 H35 V18Z" fill="white" fill-opacity="0.15"/>
-          <circle cx="11" cy="30" r="5.5" fill="white" fill-opacity="0.2"/>
-          <circle cx="11" cy="30" r="3.5" stroke="white" stroke-width="1.4" fill="none"/>
-          <circle cx="43" cy="30" r="5.5" fill="white" fill-opacity="0.2"/>
-          <circle cx="43" cy="30" r="3.5" stroke="white" stroke-width="1.4" fill="none"/>
-        </svg>
-      </div>
-      <div class="logo-top" style="font-size:36px;justify-content:center">NORD<span class="dot">·</span>TRAJET</div>
-      <div class="logo-bottom" style="font-size:11px;text-align:center;margin-top:4px">De Transport</div>
-      <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)" data-fr="Tanger · Maroc — Depuis 2020" data-en="Tangier · Morocco — Since 2020">Tanger · Maroc — Depuis 2020</div>
-    </div>
+    <svg viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rg" x1="80" y1="310" x2="420" y2="80" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="var(--gold)"/>
+          <stop offset="100%" stop-color="var(--blue-bright)"/>
+        </linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <radialGradient id="hg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--gold)" stop-opacity="0.25"/><stop offset="100%" stop-color="var(--gold)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="bg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--blue-bright)" stop-opacity="0.2"/><stop offset="100%" stop-color="var(--blue-bright)" stop-opacity="0"/></radialGradient>
+      </defs>
+      <!-- Glows -->
+      <ellipse cx="80" cy="310" rx="60" ry="60" fill="url(#hg)"/>
+      <ellipse cx="420" cy="80" rx="70" ry="70" fill="url(#bg)"/>
+      <ellipse cx="250" cy="195" rx="40" ry="40" fill="url(#hg)" opacity="0.5"/>
+      <!-- Grid lines -->
+      <line x1="0" y1="310" x2="500" y2="310" stroke="rgba(255,255,255,0.035)" stroke-width="1"/>
+      <line x1="80" y1="0" x2="80" y2="400" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+      <line x1="420" y1="0" x2="420" y2="400" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+      <line x1="250" y1="0" x2="250" y2="400" stroke="rgba(255,255,255,0.02)" stroke-width="1"/>
+      <!-- Route shadow + dash + animated -->
+      <path d="M 80 310 C 130 270 190 230 250 195 C 310 160 360 130 420 80" stroke="rgba(0,0,0,0.35)" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+      <path d="M 80 310 C 130 270 190 230 250 195 C 310 160 360 130 420 80" stroke="rgba(255,255,255,0.05)" stroke-width="2.5" stroke-dasharray="10 8"/>
+      <path d="M 80 310 C 130 270 190 230 250 195 C 310 160 360 130 420 80" stroke="url(#rg)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="8 5">
+        <animate attributeName="stroke-dashoffset" from="0" to="-500" dur="5s" repeatCount="indefinite"/>
+      </path>
+      <!-- Branch to Marrakech -->
+      <path d="M 250 195 C 280 230 310 260 350 280" stroke="rgba(255,255,255,0.05)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <circle cx="350" cy="280" r="5" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <text x="360" y="284" fill="rgba(237,242,250,0.45)" font-family="'DM Mono',monospace" font-size="8" letter-spacing="1.5">MARRAKECH</text>
+      <!-- Branch to Fès -->
+      <path d="M 250 195 C 200 170 170 140 150 120" stroke="rgba(255,255,255,0.05)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <circle cx="150" cy="120" r="5" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+      <text x="112" y="112" fill="rgba(237,242,250,0.45)" font-family="'DM Mono',monospace" font-size="8" letter-spacing="1.5">FÈS</text>
+      <!-- Branch to Agadir -->
+      <path d="M 250 195 C 230 250 200 310 170 350" stroke="rgba(255,255,255,0.04)" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <circle cx="170" cy="350" r="4" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <text x="180" y="354" fill="rgba(237,242,250,0.35)" font-family="'DM Mono',monospace" font-size="8" letter-spacing="1.5">AGADIR</text>
+      <!-- International indicator -->
+      <path d="M 420 80 C 440 60 460 45 480 35" stroke="rgba(59,142,255,0.3)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="440" y="30" fill="rgba(59,142,255,0.5)" font-family="'DM Mono',monospace" font-size="7" letter-spacing="1.5">EUROPE →</text>
+      <!-- Tanger node -->
+      <circle cx="80" cy="310" r="18" fill="rgba(232,162,26,0.12)" stroke="rgba(232,162,26,0.4)" stroke-width="1">
+        <animate attributeName="r" values="18;24;18" dur="3s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="80" cy="310" r="8" fill="var(--gold)" filter="url(#glow)"/>
+      <circle cx="80" cy="310" r="4" fill="white"/>
+      <text x="100" y="315" fill="rgba(237,242,250,0.9)" font-family="'Bebas Neue',sans-serif" font-size="17" letter-spacing="2.5">TANGER</text>
+      <text x="100" y="330" fill="rgba(122,150,187,0.6)" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1.5">DÉPART</text>
+      <!-- Rabat mid-node -->
+      <circle cx="250" cy="195" r="5" fill="rgba(255,255,255,0.25)" stroke="rgba(255,255,255,0.1)"/>
+      <rect x="222" y="162" width="22" height="18" rx="3" fill="rgba(232,162,26,0.12)" stroke="rgba(232,162,26,0.35)" stroke-width="1"/>
+      <line x1="222" y1="171" x2="244" y2="171" stroke="rgba(232,162,26,0.3)" stroke-width="1"/>
+      <line x1="233" y1="162" x2="233" y2="180" stroke="rgba(232,162,26,0.25)" stroke-width="1"/>
+      <text x="250" y="190" fill="rgba(237,242,250,0.5)" font-family="'DM Mono',monospace" font-size="8" letter-spacing="1.5" text-anchor="middle">RABAT</text>
+      <!-- Casablanca node -->
+      <circle cx="420" cy="80" r="20" fill="rgba(59,142,255,0.12)" stroke="rgba(59,142,255,0.4)" stroke-width="1">
+        <animate attributeName="r" values="20;28;20" dur="2.5s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="420" cy="80" r="8" fill="var(--blue-bright)" filter="url(#glow)"/>
+      <circle cx="420" cy="80" r="4" fill="white"/>
+      <text x="338" y="62" fill="rgba(237,242,250,0.9)" font-family="'Bebas Neue',sans-serif" font-size="17" letter-spacing="2.5">CASABLANCA</text>
+      <text x="372" y="77" fill="rgba(122,150,187,0.6)" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1.5">ARRIVÉE</text>
+      <!-- Moving dot -->
+      <g filter="url(#glow)">
+        <circle r="9" fill="var(--gold)" opacity="0.95">
+          <animateMotion dur="5s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#rPath"/>
+          </animateMotion>
+        </circle>
+      </g>
+      <path id="rPath" d="M 80 310 C 130 270 190 230 250 195 C 310 160 360 130 420 80" visibility="hidden"/>
+      <!-- Distance badge -->
+      <rect x="188" y="218" width="120" height="28" rx="6" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.07)"/>
+      <text x="248" y="236" fill="rgba(237,242,250,0.5)" font-family="'DM Mono',monospace" font-size="9" letter-spacing="1" text-anchor="middle">TOUT LE MAROC — 24H</text>
+    </svg>
+  </div>
+  <div class="scroll-hint">
+    <span data-fr="Défiler" data-en="Scroll">Défiler</span>
+    <div class="scroll-line"></div>
   </div>
 </section>
 
@@ -612,6 +707,13 @@ nav ul{display:none}
     </div>
   </div>
 </footer>
+
+
+<!-- Mobile language toggle -->
+<div class="mobile-lang">
+  <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+  <button class="lang-btn" onclick="setLang('en')">EN</button>
+</div>
 
 <script>
 // Language switcher
